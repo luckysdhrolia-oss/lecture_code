@@ -1,3 +1,7 @@
+import {
+	PipeLine,
+} from "./index";
+
 export interface Tester {
 	execute(): Promise<boolean>;
 }
@@ -21,7 +25,7 @@ export class IntegrationTester implements Tester {
 	}
 }
 
-export class UnitTestOnlyPipeline {
+export class UnitTestOnlyPipeline implements PipeLine{
 	private unitTester = new UnitTester();
 	name(): string {
 		return "Unit Tests";
@@ -32,7 +36,7 @@ export class UnitTestOnlyPipeline {
 	}
 }
 
-export class UnitTestAndIntegrationTestPipeline {
+export class UnitTestAndIntegrationTestPipeline implements PipeLine{
 	private unitTester = new UnitTester();
 	private integrationTester = new IntegrationTester();
 
@@ -43,5 +47,9 @@ export class UnitTestAndIntegrationTestPipeline {
 	async run() {
 		// TODO: Implement! run() should execute unit testing, and if that succeeds, run integration testing.
 		// return a Promise<boolean> representing whether all tests passed.
+        if (await this.unitTester.execute()) {
+            return this.integrationTester.execute();
+        }
+        return Promise.resolve(false);
 	}
 }

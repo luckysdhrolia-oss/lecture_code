@@ -19,3 +19,8 @@ class Runner {
 
 // sample usage
 new Runner().runPipeline("unit");
+
+export interface PipeLine {
+    name(): string;
+    run(): Promise<Boolean>;
+}

@@ -19,7 +19,19 @@ export class JsonBookingStore implements BookingStore {
 
 	bookingsFor(room: string, date: string): Booking[] {
 		// TODO: read the records from this.file, and return the ones for room on date as Bookings
-		throw new Error("not implemented");
+        const bookings: BookingRecord[] = JSON.parse(fs.readFileSync(this.file, "utf8"));
+        const actuals: Booking[] = [];
+        for (const booking of bookings) {
+            if (booking.room === room && booking.date === date) {
+                actuals.push({room: booking.room,
+                    student: booking.student,
+                    date: booking.date,
+                    start: booking.startTime,
+                    end: booking.endTime,
+                });
+            }
+        }
+		return actuals;
 	}
 
 	add(booking: Booking): void {

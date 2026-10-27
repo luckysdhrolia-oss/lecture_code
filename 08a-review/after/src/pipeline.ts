@@ -52,14 +52,25 @@ export class GenericPipeline implements Pipeline {
 	async run() {
 		// TODO: Implement! run() should execute all prior pipelines and then execute t's.
 		// return a Promise<boolean> representing whether all tests passed.
+        const pastSuccess = await this.p.run();
+        if (pastSuccess) {
+            return this.t.execute();
+        }
+        return Promise.resolve(false);
 	}
 }
 
 export class UnitTestPipeline extends GenericPipeline {
+    name(): string {
+        return "Unit Tests";
+    }
 	// TODO: implement
 }
 
 export class IntegrationTestPipeline extends GenericPipeline {
+    name(): string {
+        return "Unit Tests and Integration Tests";
+    }
 	// TODO: implement
 }
 
